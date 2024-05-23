@@ -21,7 +21,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // handle specific exceptions
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
-                                                                        WebRequest webRequest){
+                                                                        WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
@@ -29,15 +29,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BlogAPIException.class)
     public ResponseEntity<ErrorDetails> handleBlogAPIException(BlogAPIException exception,
-                                                                        WebRequest webRequest){
+                                                               WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
+
     // global exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGlobalException(Exception exception,
-                                                               WebRequest webRequest){
+                                                              WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,8 +50,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpStatus status,
                                                                   WebRequest request) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) ->{
-            String fieldName = ((FieldError)error).getField();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
             errors.put(fieldName, message);
         });
