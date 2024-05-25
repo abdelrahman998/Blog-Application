@@ -18,7 +18,7 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
 
     // generate token
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication){
         String username = authentication.getName();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + jwtExpirationInMs);
@@ -27,26 +27,26 @@ public class JwtTokenProvider {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.ES512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
         return token;
     }
 
     // get username from the token
-    public String getUserNameFromJWT(String token) {
+    public String getUsernameFromJWT(String token){
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
     }
 
     // validate JWT token
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);;
+    public boolean validateToken(String token){
+        try{
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
-        } catch (SignatureException ex) {
+        }catch (SignatureException ex){
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT signature");
         } catch (MalformedJwtException ex) {
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Invalid JWT token");
@@ -55,7 +55,8 @@ public class JwtTokenProvider {
         } catch (UnsupportedJwtException ex) {
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
-            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "JWT claims string is empty");
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "JWT claims string is empty.");
         }
     }
+
 }

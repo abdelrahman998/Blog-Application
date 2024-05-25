@@ -49,7 +49,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // get token from tokenProvider
+        // get token form tokenProvider
         String token = tokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok(new JWTAuthResponse(token));
