@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.HashSet;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping()
 public class PostController {
 
     private PostService postService;
@@ -24,13 +24,13 @@ public class PostController {
 
     @PreAuthorize("hasRole('ADMIN')")
     // create blog post rest api
-    @PostMapping
+    @PostMapping("/api/v1/posts")
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
     // get all posts rest api
-    @GetMapping
+    @GetMapping("/api/v1/posts")
     public PostResponse getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -41,24 +41,24 @@ public class PostController {
     }
 
     // get post by id
-    @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") long id){
+    @GetMapping(value = "/api/v1/posts/{id}")
+    public ResponseEntity<PostDto> getPostByIdV1(@PathVariable(name = "id") long id){
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     // update post by id rest api
-    @PutMapping("/{id}")
+    @PutMapping("/api/v1/posts/{id}")
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable(name = "id") long id){
 
-       PostDto postResponse = postService.updatePost(postDto, id);
+        PostDto postResponse = postService.updatePost(postDto, id);
 
-       return new ResponseEntity<>(postResponse, HttpStatus.OK);
+        return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     // delete post rest api
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/posts/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id){
 
         postService.deletePostById(id);
