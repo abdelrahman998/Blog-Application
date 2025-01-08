@@ -31,7 +31,7 @@ This is a Spring Boot application for a blogging platform. It provides RESTful A
     - Create a database named `blog`.
     - Update the database configuration in `src/main/resources/application.properties`:
         ```ini
-        spring.datasource.url=jdbc:mysql://localhost:3306/blog?useSSL=false&serverTimezone=UTC
+        spring.datasource.url=datasource_url_here
         spring.datasource.username=your_username_here
         spring.datasource.password=your_password_here
         ```
